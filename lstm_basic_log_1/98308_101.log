@@ -1,0 +1,202 @@
+[2021-06-12 20:12:35,397] [WARNING] [runner.py:122:fetch_hostfile] Unable to find hostfile, will proceed with training with local resources only.
+[2021-06-12 20:12:39,065] [INFO] [runner.py:360:main] cmd = /usr/bin/python3.6 -u -m deepspeed.launcher.launch --world_info=eyJsb2NhbGhvc3QiOiBbMF19 --master_addr=127.0.0.1 --master_port=29500 train_mini_batch.py --batch-size 98308 --deepspeed_config ds_config.json
+[2021-06-12 20:12:40,058] [INFO] [launch.py:80:main] WORLD INFO DICT: {'localhost': [0]}
+[2021-06-12 20:12:40,058] [INFO] [launch.py:89:main] nnodes=1, num_local_procs=1, node_rank=0
+[2021-06-12 20:12:40,059] [INFO] [launch.py:101:main] global_rank_mapping=defaultdict(<class 'list'>, {'localhost': [0]})
+[2021-06-12 20:12:40,059] [INFO] [launch.py:102:main] dist_world_size=1
+[2021-06-12 20:12:40,059] [INFO] [launch.py:105:main] Setting CUDA_VISIBLE_DEVICES=0
+main start at this time 1623528765.5901475
+before load_ogb step Time(s): 0.0021
+-------------------------------------------------------------from ogb.nodeproppred import DglNodePropPredDataset***************************  
+{'VmPeak': 20521.17578125, 'VmSize': 20395.00390625, 'VmHWM': 1164.609375, 'VmRSS': 1164.609375}  
+
+load ogbn-products
+-------------------------------------------------------------data = DglNodePropPredDataset(name=name)*************************** step Time(s): 1.6429
+finish loading ogbn-products
+-------------------------------------------------------------splitted_idx = data.get_idx_split()*************************** step Time(s): 0.2829
+-------------------------------------------------------------graph, labels = data[0]*************************** step Time(s): 0.0000
+tensor([[0],
+        [1],
+        [2],
+        ...,
+        [8],
+        [2],
+        [4]])
+(Graph(num_nodes=2449029, num_edges=123718280,
+      ndata_schemes={'feat': Scheme(shape=(100,), dtype=torch.float32)}
+      edata_schemes={}), tensor([[0],
+        [1],
+        [2],
+        ...,
+        [8],
+        [2],
+        [4]]))
+Graph(num_nodes=2449029, num_edges=123718280,
+      ndata_schemes={'feat': Scheme(shape=(100,), dtype=torch.float32)}
+      edata_schemes={})
+-------------------------------------------------------------labels = labels[:, 0]*************************** step Time(s): 0.0013
+-------------------------------------------------------------graph.ndata['features'] = graph.ndata['feat']*************************** step Time(s): 0.0002
+-------------------------------------------------graph.ndata['labels'] = labels****************** step Time(s): 0.0000
+-------------------------------------------------train_nid, val_nid, test_nid = splitted_idx****************** step Time(s): 0.0650
+-------------------------------------------------end of load ogb****************** step Time(s): 0.0022
+finish constructing ogbn-products
+load ogb-products time total: 1.994452953338623
+#nodes: 2449029
+#edges: 123718280
+#classes: 47
+after load_ogb step Time(s): 1.9954
+after inductive else step Time(s): 0.0000
+after label step Time(s): 3.8176
+after train_g.create_formats_() step Time(s): 1.7597
+in_feats 100
+train_labels.shape torch.Size([2449029])
+args.batch_size 98308
+SAGE(
+  (layers): ModuleList(
+    (0): SAGEConv(
+      (feat_drop): Dropout(p=0.0, inplace=False)
+      (lstm): LSTM(100, 100, batch_first=True)
+      (fc_self): Linear(in_features=100, out_features=16, bias=False)
+      (fc_neigh): Linear(in_features=100, out_features=16, bias=False)
+    )
+    (1): SAGEConv(
+      (feat_drop): Dropout(p=0.0, inplace=False)
+      (lstm): LSTM(16, 16, batch_first=True)
+      (fc_self): Linear(in_features=16, out_features=47, bias=False)
+      (fc_neigh): Linear(in_features=16, out_features=47, bias=False)
+    )
+  )
+  (dropout): Dropout(p=0.5, inplace=False)
+)
+[2021-06-12 20:12:53,196] [INFO] [logging.py:60:log_dist] [Rank -1] DeepSpeed info: version=0.3.17+unknown, git-hash=unknown, git-branch=unknown
+[2021-06-12 20:12:53,198] [INFO] [distributed.py:47:init_distributed] Initializing torch distributed with backend: nccl
+[2021-06-12 20:12:53,201] [INFO] [utils.py:13:_initialize_parameter_parallel_groups] data_parallel_size: 1, parameter_parallel_size: 1
+[2021-06-12 20:12:55,535] [INFO] [engine.py:165:__init__] DeepSpeed Flops Profiler Enabled: False
+[2021-06-12 20:12:55,538] [INFO] [engine.py:622:_configure_optimizer] Using DeepSpeed Optimizer param name adam as basic optimizer
+[2021-06-12 20:12:55,538] [INFO] [engine.py:626:_configure_optimizer] DeepSpeed Basic Optimizer = FusedAdam
+[2021-06-12 20:12:55,538] [INFO] [logging.py:60:log_dist] [Rank 0] DeepSpeed Final Optimizer = adam
+[2021-06-12 20:12:55,538] [INFO] [engine.py:450:_configure_lr_scheduler] DeepSpeed using configured LR scheduler = WarmupLR
+[2021-06-12 20:12:55,538] [INFO] [logging.py:60:log_dist] [Rank 0] DeepSpeed LR Scheduler = <deepspeed.runtime.lr_schedules.WarmupLR object at 0x7f2dccfd1908>
+[2021-06-12 20:12:55,538] [INFO] [logging.py:60:log_dist] [Rank 0] step=0, skipped=0, lr=[0.03], mom=[[0.8, 0.999]]
+[2021-06-12 20:12:55,538] [INFO] [config.py:748:print] DeepSpeedEngine configuration:
+[2021-06-12 20:12:55,538] [INFO] [config.py:752:print]   activation_checkpointing_config  {
+    "partition_activations": false, 
+    "contiguous_memory_optimization": false, 
+    "cpu_checkpointing": false, 
+    "number_checkpoints": null, 
+    "synchronize_checkpoint_boundary": false, 
+    "profile": false
+}
+[2021-06-12 20:12:55,538] [INFO] [config.py:752:print]   aio_config ................... {'block_size': 1048576, 'queue_depth': 8, 'thread_count': 1, 'single_submit': False, 'overlap_events': True}
+[2021-06-12 20:12:55,538] [INFO] [config.py:752:print]   allreduce_always_fp32 ........ False
+[2021-06-12 20:12:55,538] [INFO] [config.py:752:print]   amp_enabled .................. False
+[2021-06-12 20:12:55,538] [INFO] [config.py:752:print]   amp_params ................... False
+[2021-06-12 20:12:55,538] [INFO] [config.py:752:print]   checkpoint_tag_validation_enabled  True
+[2021-06-12 20:12:55,538] [INFO] [config.py:752:print]   checkpoint_tag_validation_fail  False
+[2021-06-12 20:12:55,538] [INFO] [config.py:752:print]   disable_allgather ............ False
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   dump_state ................... False
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   dynamic_loss_scale_args ...... None
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   elasticity_enabled ........... False
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   flops_profiler_config ........ {
+    "enabled": false, 
+    "profile_step": 1, 
+    "module_depth": -1, 
+    "top_modules": 1, 
+    "detailed": true, 
+    "output_file": null
+}
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   fp16_enabled ................. False
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   global_rank .................. 0
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   gradient_accumulation_steps .. 1
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   gradient_clipping ............ 0.0
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   gradient_predivide_factor .... 1.0
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   initial_dynamic_scale ........ 4294967296
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   loss_scale ................... 0
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   memory_breakdown ............. False
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   optimizer_legacy_fusion ...... False
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   optimizer_name ............... adam
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   optimizer_params ............. {'lr': 0.03, 'betas': [0.8, 0.999], 'eps': 1e-08, 'weight_decay': 3e-07}
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   pipeline ..................... {'stages': 'auto', 'partition': 'best', 'seed_layers': False, 'activation_checkpoint_interval': 0}
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   pld_enabled .................. False
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   pld_params ................... False
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   prescale_gradients ........... False
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   scheduler_name ............... WarmupLR
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   scheduler_params ............. {'warmup_min_lr': 0, 'warmup_max_lr': 0.03, 'warmup_num_steps': 10}
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   sparse_attention ............. None
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   sparse_gradients_enabled ..... False
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   steps_per_print .............. 10
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   tensorboard_enabled .......... False
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   tensorboard_job_name ......... DeepSpeedJobName
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   tensorboard_output_path ...... 
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   train_batch_size ............. 1500
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   train_micro_batch_size_per_gpu  1500
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   wall_clock_breakdown ......... False
+[2021-06-12 20:12:55,539] [INFO] [config.py:752:print]   world_size ................... 1
+[2021-06-12 20:12:55,540] [INFO] [config.py:752:print]   zero_allow_untested_optimizer  False
+[2021-06-12 20:12:55,540] [INFO] [config.py:752:print]   zero_config .................. {
+    "stage": 0, 
+    "contiguous_gradients": false, 
+    "reduce_scatter": false, 
+    "reduce_bucket_size": 5.000000e+08, 
+    "allgather_partitions": true, 
+    "allgather_bucket_size": 5.000000e+08, 
+    "overlap_comm": false, 
+    "load_from_fp32_weights": true, 
+    "elastic_checkpoint": true, 
+    "offload_param": null, 
+    "offload_optimizer": null, 
+    "sub_group_size": 1.000000e+12, 
+    "prefetch_bucket_size": 5.000000e+07, 
+    "param_persistence_threshold": 1.000000e+05, 
+    "max_live_parameters": 1.000000e+09, 
+    "max_reuse_distance": 1.000000e+09, 
+    "gather_fp16_weights_on_model_save": false, 
+    "ignore_unused_parameters": true
+}
+[2021-06-12 20:12:55,540] [INFO] [config.py:752:print]   zero_enabled ................. False
+[2021-06-12 20:12:55,540] [INFO] [config.py:752:print]   zero_optimization_stage ...... 0
+[2021-06-12 20:12:55,542] [INFO] [config.py:760:print]   json = {
+    "train_batch_size": 1.500000e+03, 
+    "steps_per_print": 10, 
+    "optimizer": {
+        "type": "Adam", 
+        "params": {
+            "lr": 0.03, 
+            "betas": [0.8, 0.999], 
+            "eps": 1e-08, 
+            "weight_decay": 3e-07
+        }
+    }, 
+    "scheduler": {
+        "type": "WarmupLR", 
+        "params": {
+            "warmup_min_lr": 0, 
+            "warmup_max_lr": 0.03, 
+            "warmup_num_steps": 10
+        }
+    }, 
+    "wall_clock_breakdown": false
+}
+******************************0 epoch 
+ the length of training loader ------------------------------------------------------------
+2
+1
+23
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 2.31494140625GB
+
+Max Memory Allocated 0.9309120178222656  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 2.94775390625GB
+
+Max Memory Allocated 1.562434196472168  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 3.07080078125GB
+
+Max Memory Allocated 1.562434196472168  GigaBytes
+
+Killing subprocess 435621

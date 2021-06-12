@@ -1,0 +1,4646 @@
+[2021-06-10 20:56:50,978] [WARNING] [runner.py:122:fetch_hostfile] Unable to find hostfile, will proceed with training with local resources only.
+[2021-06-10 20:56:54,648] [INFO] [runner.py:360:main] cmd = /usr/bin/python3.6 -u -m deepspeed.launcher.launch --world_info=eyJsb2NhbGhvc3QiOiBbMF19 --master_addr=127.0.0.1 --master_port=29500 train_serial.py --batch-size 196615 --deepspeed_config ds_config.json
+[2021-06-10 20:56:55,516] [INFO] [launch.py:80:main] WORLD INFO DICT: {'localhost': [0]}
+[2021-06-10 20:56:55,516] [INFO] [launch.py:89:main] nnodes=1, num_local_procs=1, node_rank=0
+[2021-06-10 20:56:55,517] [INFO] [launch.py:101:main] global_rank_mapping=defaultdict(<class 'list'>, {'localhost': [0]})
+[2021-06-10 20:56:55,517] [INFO] [launch.py:102:main] dist_world_size=1
+[2021-06-10 20:56:55,517] [INFO] [launch.py:105:main] Setting CUDA_VISIBLE_DEVICES=0
+main start at this time 1623358621.258924
+before load_ogb step Time(s): 0.0018
+-------------------------------------------------------------from ogb.nodeproppred import DglNodePropPredDataset***************************  
+{'VmPeak': 20521.1796875, 'VmSize': 20395.015625, 'VmHWM': 1164.9765625, 'VmRSS': 1164.9765625}  
+
+load ogbn-products
+-------------------------------------------------------------data = DglNodePropPredDataset(name=name)*************************** step Time(s): 1.6436
+finish loading ogbn-products
+-------------------------------------------------------------splitted_idx = data.get_idx_split()*************************** step Time(s): 0.2824
+-------------------------------------------------------------graph, labels = data[0]*************************** step Time(s): 0.0000
+tensor([[0],
+        [1],
+        [2],
+        ...,
+        [8],
+        [2],
+        [4]])
+(Graph(num_nodes=2449029, num_edges=123718280,
+      ndata_schemes={'feat': Scheme(shape=(100,), dtype=torch.float32)}
+      edata_schemes={}), tensor([[0],
+        [1],
+        [2],
+        ...,
+        [8],
+        [2],
+        [4]]))
+Graph(num_nodes=2449029, num_edges=123718280,
+      ndata_schemes={'feat': Scheme(shape=(100,), dtype=torch.float32)}
+      edata_schemes={})
+-------------------------------------------------------------labels = labels[:, 0]*************************** step Time(s): 0.0011
+-------------------------------------------------------------graph.ndata['features'] = graph.ndata['feat']*************************** step Time(s): 0.0002
+-------------------------------------------------graph.ndata['labels'] = labels****************** step Time(s): 0.0000
+-------------------------------------------------train_nid, val_nid, test_nid = splitted_idx****************** step Time(s): 0.0982
+-------------------------------------------------end of load ogb****************** step Time(s): 0.0020
+finish constructing ogbn-products
+load ogb-products time total: 2.027517080307007
+#nodes: 2449029
+#edges: 123718280
+#classes: 47
+after load_ogb step Time(s): 2.0284
+after inductive else step Time(s): 0.0000
+after label step Time(s): 3.4746
+after train_g.create_formats_() step Time(s): 1.5980
+in_feats 100
+train_labels.shape torch.Size([2449029])
+args.batch_size 196615
+SAGE(
+  (layers): ModuleList(
+    (0): SAGEConv(
+      (feat_drop): Dropout(p=0.0, inplace=False)
+      (fc_self): Linear(in_features=100, out_features=16, bias=False)
+      (fc_neigh): Linear(in_features=100, out_features=16, bias=False)
+    )
+    (1): SAGEConv(
+      (feat_drop): Dropout(p=0.0, inplace=False)
+      (fc_self): Linear(in_features=16, out_features=47, bias=False)
+      (fc_neigh): Linear(in_features=16, out_features=47, bias=False)
+    )
+  )
+  (dropout): Dropout(p=0.5, inplace=False)
+)
+[2021-06-10 20:57:08,388] [INFO] [logging.py:60:log_dist] [Rank -1] DeepSpeed info: version=0.3.17+unknown, git-hash=unknown, git-branch=unknown
+[2021-06-10 20:57:08,389] [INFO] [distributed.py:47:init_distributed] Initializing torch distributed with backend: nccl
+[2021-06-10 20:57:08,393] [INFO] [utils.py:13:_initialize_parameter_parallel_groups] data_parallel_size: 1, parameter_parallel_size: 1
+[2021-06-10 20:57:10,752] [INFO] [engine.py:165:__init__] DeepSpeed Flops Profiler Enabled: False
+[2021-06-10 20:57:10,754] [INFO] [engine.py:622:_configure_optimizer] Using DeepSpeed Optimizer param name adam as basic optimizer
+[2021-06-10 20:57:10,754] [INFO] [engine.py:626:_configure_optimizer] DeepSpeed Basic Optimizer = FusedAdam
+[2021-06-10 20:57:10,754] [INFO] [logging.py:60:log_dist] [Rank 0] DeepSpeed Final Optimizer = adam
+[2021-06-10 20:57:10,754] [INFO] [engine.py:450:_configure_lr_scheduler] DeepSpeed using configured LR scheduler = WarmupLR
+[2021-06-10 20:57:10,754] [INFO] [logging.py:60:log_dist] [Rank 0] DeepSpeed LR Scheduler = <deepspeed.runtime.lr_schedules.WarmupLR object at 0x7fccc81668d0>
+[2021-06-10 20:57:10,754] [INFO] [logging.py:60:log_dist] [Rank 0] step=0, skipped=0, lr=[0.03], mom=[[0.8, 0.999]]
+[2021-06-10 20:57:10,754] [INFO] [config.py:748:print] DeepSpeedEngine configuration:
+[2021-06-10 20:57:10,754] [INFO] [config.py:752:print]   activation_checkpointing_config  {
+    "partition_activations": false, 
+    "contiguous_memory_optimization": false, 
+    "cpu_checkpointing": false, 
+    "number_checkpoints": null, 
+    "synchronize_checkpoint_boundary": false, 
+    "profile": false
+}
+[2021-06-10 20:57:10,754] [INFO] [config.py:752:print]   aio_config ................... {'block_size': 1048576, 'queue_depth': 8, 'thread_count': 1, 'single_submit': False, 'overlap_events': True}
+[2021-06-10 20:57:10,754] [INFO] [config.py:752:print]   allreduce_always_fp32 ........ False
+[2021-06-10 20:57:10,754] [INFO] [config.py:752:print]   amp_enabled .................. False
+[2021-06-10 20:57:10,754] [INFO] [config.py:752:print]   amp_params ................... False
+[2021-06-10 20:57:10,754] [INFO] [config.py:752:print]   checkpoint_tag_validation_enabled  True
+[2021-06-10 20:57:10,754] [INFO] [config.py:752:print]   checkpoint_tag_validation_fail  False
+[2021-06-10 20:57:10,754] [INFO] [config.py:752:print]   disable_allgather ............ False
+[2021-06-10 20:57:10,754] [INFO] [config.py:752:print]   dump_state ................... False
+[2021-06-10 20:57:10,754] [INFO] [config.py:752:print]   dynamic_loss_scale_args ...... None
+[2021-06-10 20:57:10,754] [INFO] [config.py:752:print]   elasticity_enabled ........... False
+[2021-06-10 20:57:10,754] [INFO] [config.py:752:print]   flops_profiler_config ........ {
+    "enabled": false, 
+    "profile_step": 1, 
+    "module_depth": -1, 
+    "top_modules": 1, 
+    "detailed": true, 
+    "output_file": null
+}
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   fp16_enabled ................. False
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   global_rank .................. 0
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   gradient_accumulation_steps .. 1
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   gradient_clipping ............ 0.0
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   gradient_predivide_factor .... 1.0
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   initial_dynamic_scale ........ 4294967296
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   loss_scale ................... 0
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   memory_breakdown ............. False
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   optimizer_legacy_fusion ...... False
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   optimizer_name ............... adam
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   optimizer_params ............. {'lr': 0.03, 'betas': [0.8, 0.999], 'eps': 1e-08, 'weight_decay': 3e-07}
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   pipeline ..................... {'stages': 'auto', 'partition': 'best', 'seed_layers': False, 'activation_checkpoint_interval': 0}
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   pld_enabled .................. False
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   pld_params ................... False
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   prescale_gradients ........... False
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   scheduler_name ............... WarmupLR
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   scheduler_params ............. {'warmup_min_lr': 0, 'warmup_max_lr': 0.03, 'warmup_num_steps': 10}
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   sparse_attention ............. None
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   sparse_gradients_enabled ..... False
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   steps_per_print .............. 10
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   tensorboard_enabled .......... False
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   tensorboard_job_name ......... DeepSpeedJobName
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   tensorboard_output_path ...... 
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   train_batch_size ............. 1500
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   train_micro_batch_size_per_gpu  1500
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   wall_clock_breakdown ......... False
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   world_size ................... 1
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   zero_allow_untested_optimizer  False
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   zero_config .................. {
+    "stage": 0, 
+    "contiguous_gradients": false, 
+    "reduce_scatter": false, 
+    "reduce_bucket_size": 5.000000e+08, 
+    "allgather_partitions": true, 
+    "allgather_bucket_size": 5.000000e+08, 
+    "overlap_comm": false, 
+    "load_from_fp32_weights": true, 
+    "elastic_checkpoint": true, 
+    "offload_param": null, 
+    "offload_optimizer": null, 
+    "sub_group_size": 1.000000e+12, 
+    "prefetch_bucket_size": 5.000000e+07, 
+    "param_persistence_threshold": 1.000000e+05, 
+    "max_live_parameters": 1.000000e+09, 
+    "max_reuse_distance": 1.000000e+09, 
+    "gather_fp16_weights_on_model_save": false, 
+    "ignore_unused_parameters": true
+}
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   zero_enabled ................. False
+[2021-06-10 20:57:10,755] [INFO] [config.py:752:print]   zero_optimization_stage ...... 0
+[2021-06-10 20:57:10,757] [INFO] [config.py:760:print]   json = {
+    "train_batch_size": 1.500000e+03, 
+    "steps_per_print": 10, 
+    "optimizer": {
+        "type": "Adam", 
+        "params": {
+            "lr": 0.03, 
+            "betas": [0.8, 0.999], 
+            "eps": 1e-08, 
+            "weight_decay": 3e-07
+        }
+    }, 
+    "scheduler": {
+        "type": "WarmupLR", 
+        "params": {
+            "warmup_min_lr": 0, 
+            "warmup_max_lr": 0.03, 
+            "warmup_num_steps": 10
+        }
+    }, 
+    "wall_clock_breakdown": false
+}
+******************************0 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 2.31494140625GB
+
+Max Memory Allocated 0.9306011199951172  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 3.01025390625GB
+
+Max Memory Allocated 1.6259136199951172  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 3.17236328125GB
+
+Max Memory Allocated 1.6259136199951172  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 4.01611328125GB
+
+Max Memory Allocated 2.00726318359375  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 4.01611328125GB
+
+Max Memory Allocated 2.00726318359375  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 4.52197265625GB
+
+Max Memory Allocated 2.069767951965332  GigaBytes
+
+Epoch 00000 | Step 00000 | Loss 5.6074 | Train Acc 0.0188 | Speed (samples/sec) nan | GPU 2119.4 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 4.52197265625GB
+
+Max Memory Allocated 2.069767951965332  GigaBytes
+
+Epoch Time(s): 7.6323
+******************************1 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 4.52197265625GB
+
+Max Memory Allocated 2.069767951965332  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.3441734313964844  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 5.33251953125GB
+
+Max Memory Allocated 2.3441734313964844  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 5.46728515625GB
+
+Max Memory Allocated 2.3441734313964844  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.06103515625GB
+
+Max Memory Allocated 2.3441734313964844  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.3441734313964844  GigaBytes
+
+Epoch 00001 | Step 00000 | Loss 4.1996 | Train Acc 0.0826 | Speed (samples/sec) nan | GPU 2400.4 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.3441734313964844  GigaBytes
+
+Epoch Time(s): 7.1441
+******************************2 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.3441734313964844  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.3441734313964844  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 5.33251953125GB
+
+Max Memory Allocated 2.3441734313964844  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 5.46728515625GB
+
+Max Memory Allocated 2.3441734313964844  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.06103515625GB
+
+Max Memory Allocated 2.3441734313964844  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.3441734313964844  GigaBytes
+
+Epoch 00002 | Step 00000 | Loss 4.2056 | Train Acc 0.0817 | Speed (samples/sec) nan | GPU 2400.4 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.3441734313964844  GigaBytes
+
+Epoch Time(s): 6.7973
+******************************3 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.3441734313964844  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 5.33251953125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 5.46728515625GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.06103515625GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+Epoch 00003 | Step 00000 | Loss 3.8973 | Train Acc 0.1119 | Speed (samples/sec) 29778.7546 | GPU 2400.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+Epoch Time(s): 6.9822
+******************************4 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 5.33251953125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 5.46728515625GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.06103515625GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+Epoch 00004 | Step 00000 | Loss 3.4792 | Train Acc 0.1767 | Speed (samples/sec) 29303.6535 | GPU 2400.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+Epoch Time(s): 7.1441
+******************************5 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 5.33251953125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 5.46728515625GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.06103515625GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+Epoch 00005 | Step 00000 | Loss 3.0564 | Train Acc 0.2615 | Speed (samples/sec) 28929.3518 | GPU 2400.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+Epoch Time(s): 7.3085
+******************************6 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 5.33251953125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 5.46728515625GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.06103515625GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+Epoch 00006 | Step 00000 | Loss 2.6450 | Train Acc 0.3498 | Speed (samples/sec) 27747.2839 | GPU 2400.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+Epoch Time(s): 8.4578
+******************************7 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.20361328125GB
+
+Max Memory Allocated 2.344477653503418  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344559669494629  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344559669494629  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344559669494629  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344559669494629  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344559669494629  GigaBytes
+
+Epoch 00007 | Step 00000 | Loss 2.2930 | Train Acc 0.4193 | Speed (samples/sec) 27965.3766 | GPU 2400.8 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344559669494629  GigaBytes
+
+Epoch Time(s): 7.1300
+******************************8 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344559669494629  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344559669494629  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344559669494629  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344559669494629  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344559669494629  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344559669494629  GigaBytes
+
+Epoch 00008 | Step 00000 | Loss 2.0295 | Train Acc 0.4702 | Speed (samples/sec) 28022.4355 | GPU 2400.8 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344559669494629  GigaBytes
+
+Epoch Time(s): 7.2651
+******************************9 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344559669494629  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00009 | Step 00000 | Loss 1.8098 | Train Acc 0.5112 | Speed (samples/sec) 28322.3328 | GPU 2400.9 MB
+[2021-06-10 20:58:23,472] [INFO] [logging.py:60:log_dist] [Rank 0] step=10, skipped=0, lr=[0.029999999999999995], mom=[[0.8, 0.999]]
+[2021-06-10 20:58:23,472] [INFO] [timer.py:160:stop] 0/10, SamplesPerSec=3796.6922411367527
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.8528
+******************************10 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00010 | Step 00000 | Loss 1.6469 | Train Acc 0.5457 | Speed (samples/sec) 28322.1653 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 7.2429
+******************************11 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00011 | Step 00000 | Loss 1.5047 | Train Acc 0.5840 | Speed (samples/sec) 28539.2462 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.8058
+******************************12 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00012 | Step 00000 | Loss 1.3898 | Train Acc 0.6173 | Speed (samples/sec) 28686.0833 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.8423
+******************************13 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00013 | Step 00000 | Loss 1.2912 | Train Acc 0.6527 | Speed (samples/sec) 28802.3955 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.8742
+******************************14 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00014 | Step 00000 | Loss 1.2171 | Train Acc 0.6815 | Speed (samples/sec) 28890.9257 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.8879
+******************************15 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00015 | Step 00000 | Loss 1.1553 | Train Acc 0.7062 | Speed (samples/sec) 29021.7157 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.7795
+******************************16 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00016 | Step 00000 | Loss 1.0964 | Train Acc 0.7250 | Speed (samples/sec) 29027.5133 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 7.0568
+******************************17 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00017 | Step 00000 | Loss 1.0476 | Train Acc 0.7387 | Speed (samples/sec) 29120.5540 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.7785
+******************************18 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00018 | Step 00000 | Loss 1.0036 | Train Acc 0.7524 | Speed (samples/sec) 29159.7345 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.9198
+******************************19 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00019 | Step 00000 | Loss 0.9657 | Train Acc 0.7642 | Speed (samples/sec) 29222.6803 | GPU 2400.9 MB
+[2021-06-10 20:59:32,470] [INFO] [logging.py:60:log_dist] [Rank 0] step=20, skipped=0, lr=[0.03], mom=[[0.8, 0.999]]
+[2021-06-10 20:59:32,470] [INFO] [timer.py:160:stop] 0/20, SamplesPerSec=3917.038598908796
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.8091
+******************************20 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00020 | Step 00000 | Loss 0.9296 | Train Acc 0.7742 | Speed (samples/sec) 29262.0553 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.8994
+******************************21 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00021 | Step 00000 | Loss 0.8934 | Train Acc 0.7825 | Speed (samples/sec) 29211.7398 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 7.2432
+******************************22 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00022 | Step 00000 | Loss 0.8652 | Train Acc 0.7892 | Speed (samples/sec) 29260.1014 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.8213
+******************************23 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00023 | Step 00000 | Loss 0.8431 | Train Acc 0.7942 | Speed (samples/sec) 29289.2736 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.8996
+******************************24 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00024 | Step 00000 | Loss 0.8127 | Train Acc 0.8009 | Speed (samples/sec) 29315.9997 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.9035
+******************************25 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00025 | Step 00000 | Loss 0.7939 | Train Acc 0.8065 | Speed (samples/sec) 29275.7427 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 7.2853
+******************************26 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00026 | Step 00000 | Loss 0.7745 | Train Acc 0.8098 | Speed (samples/sec) 29212.3351 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 7.4094
+******************************27 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00027 | Step 00000 | Loss 0.7571 | Train Acc 0.8135 | Speed (samples/sec) 29254.0514 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.8130
+******************************28 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00028 | Step 00000 | Loss 0.7432 | Train Acc 0.8175 | Speed (samples/sec) 29286.0316 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.8457
+******************************29 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00029 | Step 00000 | Loss 0.7266 | Train Acc 0.8208 | Speed (samples/sec) 29316.0233 | GPU 2400.9 MB
+[2021-06-10 21:00:42,473] [INFO] [logging.py:60:log_dist] [Rank 0] step=30, skipped=0, lr=[0.03], mom=[[0.8, 0.999]]
+[2021-06-10 21:00:42,473] [INFO] [timer.py:160:stop] 0/30, SamplesPerSec=3906.9888753323785
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.8814
+******************************30 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00030 | Step 00000 | Loss 0.7138 | Train Acc 0.8228 | Speed (samples/sec) 29347.3655 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.8593
+******************************31 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00031 | Step 00000 | Loss 0.7025 | Train Acc 0.8245 | Speed (samples/sec) 29363.0712 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.8993
+******************************32 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00032 | Step 00000 | Loss 0.6891 | Train Acc 0.8272 | Speed (samples/sec) 29399.1408 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.7473
+******************************33 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00033 | Step 00000 | Loss 0.6791 | Train Acc 0.8293 | Speed (samples/sec) 29373.2115 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 7.1916
+******************************34 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00034 | Step 00000 | Loss 0.6747 | Train Acc 0.8310 | Speed (samples/sec) 29392.2818 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.9215
+******************************35 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00035 | Step 00000 | Loss 0.6631 | Train Acc 0.8343 | Speed (samples/sec) 29452.9508 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.5563
+******************************36 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00036 | Step 00000 | Loss 0.6548 | Train Acc 0.8368 | Speed (samples/sec) 29461.4068 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.9586
+******************************37 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00037 | Step 00000 | Loss 0.6510 | Train Acc 0.8364 | Speed (samples/sec) 29490.5465 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.7696
+******************************38 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00038 | Step 00000 | Loss 0.6460 | Train Acc 0.8378 | Speed (samples/sec) 29511.3749 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.8225
+******************************39 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00039 | Step 00000 | Loss 0.6377 | Train Acc 0.8390 | Speed (samples/sec) 29505.2032 | GPU 2400.9 MB
+[2021-06-10 21:01:51,241] [INFO] [logging.py:60:log_dist] [Rank 0] step=40, skipped=0, lr=[0.03], mom=[[0.8, 0.999]]
+[2021-06-10 21:01:51,241] [INFO] [timer.py:160:stop] 0/40, SamplesPerSec=3910.111600965869
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 7.0232
+******************************40 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.01611328125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.15087890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 5.74462890625GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch 00040 | Step 00000 | Loss 0.6287 | Train Acc 0.8408 | Speed (samples/sec) 29529.6576 | GPU 2400.9 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+Epoch Time(s): 6.7624
+******************************41 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 5.88720703125GB
+
+Max Memory Allocated 2.344620704650879  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.69970703125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.83447265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 6.42822265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch 00041 | Step 00000 | Loss 0.6290 | Train Acc 0.8406 | Speed (samples/sec) 29542.9090 | GPU 2401.1 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch Time(s): 6.8557
+******************************42 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.69970703125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.83447265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 6.42822265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch 00042 | Step 00000 | Loss 0.6193 | Train Acc 0.8431 | Speed (samples/sec) 29547.1589 | GPU 2401.1 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch Time(s): 6.9304
+******************************43 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.69970703125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.83447265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 6.42822265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch 00043 | Step 00000 | Loss 0.6174 | Train Acc 0.8429 | Speed (samples/sec) 29505.4433 | GPU 2401.1 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch Time(s): 7.3851
+******************************44 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.69970703125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.83447265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 6.42822265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch 00044 | Step 00000 | Loss 0.6123 | Train Acc 0.8455 | Speed (samples/sec) 29510.8244 | GPU 2401.1 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch Time(s): 6.9096
+******************************45 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.69970703125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.83447265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 6.42822265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch 00045 | Step 00000 | Loss 0.6082 | Train Acc 0.8451 | Speed (samples/sec) 29497.8469 | GPU 2401.1 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch Time(s): 7.1229
+******************************46 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.69970703125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.83447265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 6.42822265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch 00046 | Step 00000 | Loss 0.6033 | Train Acc 0.8462 | Speed (samples/sec) 29528.8981 | GPU 2401.1 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch Time(s): 6.6553
+******************************47 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.69970703125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.83447265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 6.42822265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch 00047 | Step 00000 | Loss 0.5994 | Train Acc 0.8478 | Speed (samples/sec) 29522.7687 | GPU 2401.1 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch Time(s): 7.0147
+******************************48 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.69970703125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.83447265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 6.42822265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch 00048 | Step 00000 | Loss 0.5933 | Train Acc 0.8476 | Speed (samples/sec) 29525.8124 | GPU 2401.1 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch Time(s): 6.9309
+******************************49 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.69970703125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.83447265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 6.42822265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch 00049 | Step 00000 | Loss 0.5933 | Train Acc 0.8480 | Speed (samples/sec) 29502.2255 | GPU 2401.1 MB
+[2021-06-10 21:03:01,085] [INFO] [logging.py:60:log_dist] [Rank 0] step=50, skipped=0, lr=[0.03], mom=[[0.8, 0.999]]
+[2021-06-10 21:03:01,085] [INFO] [timer.py:160:stop] 0/50, SamplesPerSec=3933.071724946865
+-----------------------------------------after batch engine step
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch Time(s): 7.2763
+******************************50 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 6.69970703125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 6.83447265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 6.42822265625GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch 00050 | Step 00000 | Loss 0.5891 | Train Acc 0.8494 | Speed (samples/sec) 29469.5286 | GPU 2401.1 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 6.57080078125GB
+
+Max Memory Allocated 2.344860553741455  GigaBytes
+
+Epoch Time(s): 7.3959
+Eval Acc 0.8573
+Test Acc: 0.6817
+******************************51 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00051 | Step 00000 | Loss 0.5848 | Train Acc 0.8495 | Speed (samples/sec) 29475.7121 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.9209
+******************************52 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00052 | Step 00000 | Loss 0.5856 | Train Acc 0.8506 | Speed (samples/sec) 29479.9340 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.9380
+******************************53 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00053 | Step 00000 | Loss 0.5814 | Train Acc 0.8501 | Speed (samples/sec) 29441.6235 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 7.4629
+******************************54 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00054 | Step 00000 | Loss 0.5775 | Train Acc 0.8510 | Speed (samples/sec) 29464.2808 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.7592
+******************************55 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00055 | Step 00000 | Loss 0.5776 | Train Acc 0.8521 | Speed (samples/sec) 29392.5405 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 7.9837
+******************************56 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00056 | Step 00000 | Loss 0.5730 | Train Acc 0.8515 | Speed (samples/sec) 29327.5713 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 7.9142
+******************************57 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00057 | Step 00000 | Loss 0.5739 | Train Acc 0.8517 | Speed (samples/sec) 29213.0717 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 8.8953
+******************************58 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00058 | Step 00000 | Loss 0.5721 | Train Acc 0.8527 | Speed (samples/sec) 29185.4194 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 7.4229
+******************************59 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00059 | Step 00000 | Loss 0.5664 | Train Acc 0.8544 | Speed (samples/sec) 29203.2182 | GPU 3263.7 MB
+[2021-06-10 21:04:39,444] [INFO] [logging.py:60:log_dist] [Rank 0] step=60, skipped=0, lr=[0.03], mom=[[0.8, 0.999]]
+[2021-06-10 21:04:39,444] [INFO] [timer.py:160:stop] 0/60, SamplesPerSec=3913.6160388991316
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.8186
+******************************60 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00060 | Step 00000 | Loss 0.5662 | Train Acc 0.8534 | Speed (samples/sec) 29208.6258 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.9720
+******************************61 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00061 | Step 00000 | Loss 0.5646 | Train Acc 0.8538 | Speed (samples/sec) 29205.4888 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 7.1218
+******************************62 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00062 | Step 00000 | Loss 0.5616 | Train Acc 0.8544 | Speed (samples/sec) 29217.0634 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.8860
+******************************63 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00063 | Step 00000 | Loss 0.5605 | Train Acc 0.8553 | Speed (samples/sec) 29228.8913 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.8882
+******************************64 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00064 | Step 00000 | Loss 0.5593 | Train Acc 0.8548 | Speed (samples/sec) 29255.4724 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.6605
+******************************65 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00065 | Step 00000 | Loss 0.5539 | Train Acc 0.8559 | Speed (samples/sec) 29272.4581 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.7821
+******************************66 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00066 | Step 00000 | Loss 0.5544 | Train Acc 0.8558 | Speed (samples/sec) 29281.2537 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.9073
+******************************67 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00067 | Step 00000 | Loss 0.5513 | Train Acc 0.8567 | Speed (samples/sec) 29282.5693 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.9981
+******************************68 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00068 | Step 00000 | Loss 0.5531 | Train Acc 0.8573 | Speed (samples/sec) 29293.9036 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.8470
+******************************69 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00069 | Step 00000 | Loss 0.5511 | Train Acc 0.8561 | Speed (samples/sec) 29284.0649 | GPU 3263.7 MB
+[2021-06-10 21:05:48,732] [INFO] [logging.py:60:log_dist] [Rank 0] step=70, skipped=0, lr=[0.03], mom=[[0.8, 0.999]]
+[2021-06-10 21:05:48,733] [INFO] [timer.py:160:stop] 0/70, SamplesPerSec=3922.884325589774
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 7.2252
+******************************70 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00070 | Step 00000 | Loss 0.5484 | Train Acc 0.8571 | Speed (samples/sec) 29307.5151 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.6808
+******************************71 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00071 | Step 00000 | Loss 0.5474 | Train Acc 0.8582 | Speed (samples/sec) 29316.3392 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.8651
+******************************72 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00072 | Step 00000 | Loss 0.5452 | Train Acc 0.8577 | Speed (samples/sec) 29326.3640 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.8730
+******************************73 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00073 | Step 00000 | Loss 0.5428 | Train Acc 0.8585 | Speed (samples/sec) 29335.5052 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.8746
+******************************74 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00074 | Step 00000 | Loss 0.5424 | Train Acc 0.8591 | Speed (samples/sec) 29359.7824 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.6336
+******************************75 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00075 | Step 00000 | Loss 0.5422 | Train Acc 0.8583 | Speed (samples/sec) 29387.2880 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.5786
+******************************76 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00076 | Step 00000 | Loss 0.5397 | Train Acc 0.8593 | Speed (samples/sec) 29400.9349 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.7854
+******************************77 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00077 | Step 00000 | Loss 0.5380 | Train Acc 0.8593 | Speed (samples/sec) 29401.9086 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.9727
+******************************78 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00078 | Step 00000 | Loss 0.5365 | Train Acc 0.8589 | Speed (samples/sec) 29414.8562 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.7935
+******************************79 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00079 | Step 00000 | Loss 0.5373 | Train Acc 0.8592 | Speed (samples/sec) 29442.9854 | GPU 3263.7 MB
+[2021-06-10 21:06:56,334] [INFO] [logging.py:60:log_dist] [Rank 0] step=80, skipped=0, lr=[0.03], mom=[[0.8, 0.999]]
+[2021-06-10 21:06:56,335] [INFO] [timer.py:160:stop] 0/80, SamplesPerSec=3935.4560074744654
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.5434
+******************************80 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00080 | Step 00000 | Loss 0.5338 | Train Acc 0.8605 | Speed (samples/sec) 29440.8073 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 7.0666
+******************************81 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00081 | Step 00000 | Loss 0.5337 | Train Acc 0.8599 | Speed (samples/sec) 29430.4416 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 7.2005
+******************************82 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00082 | Step 00000 | Loss 0.5336 | Train Acc 0.8595 | Speed (samples/sec) 29437.8161 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.8715
+******************************83 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00083 | Step 00000 | Loss 0.5327 | Train Acc 0.8607 | Speed (samples/sec) 29461.9255 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.5777
+******************************84 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00084 | Step 00000 | Loss 0.5297 | Train Acc 0.8609 | Speed (samples/sec) 29449.3577 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 7.2095
+******************************85 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00085 | Step 00000 | Loss 0.5295 | Train Acc 0.8612 | Speed (samples/sec) 29455.5020 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.9048
+******************************86 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00086 | Step 00000 | Loss 0.5291 | Train Acc 0.8598 | Speed (samples/sec) 29457.1799 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.9644
+******************************87 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00087 | Step 00000 | Loss 0.5270 | Train Acc 0.8612 | Speed (samples/sec) 29459.9408 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.9408
+******************************88 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00088 | Step 00000 | Loss 0.5275 | Train Acc 0.8609 | Speed (samples/sec) 29453.4473 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 7.1188
+******************************89 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00089 | Step 00000 | Loss 0.5278 | Train Acc 0.8605 | Speed (samples/sec) 29460.8195 | GPU 3263.7 MB
+[2021-06-10 21:08:06,053] [INFO] [logging.py:60:log_dist] [Rank 0] step=90, skipped=0, lr=[0.03], mom=[[0.8, 0.999]]
+[2021-06-10 21:08:06,053] [INFO] [timer.py:160:stop] 0/90, SamplesPerSec=3928.6114426515273
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.8627
+******************************90 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00090 | Step 00000 | Loss 0.5285 | Train Acc 0.8601 | Speed (samples/sec) 29455.9082 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 7.1200
+******************************91 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00091 | Step 00000 | Loss 0.5269 | Train Acc 0.8616 | Speed (samples/sec) 29419.5674 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 7.8225
+******************************92 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00092 | Step 00000 | Loss 0.5252 | Train Acc 0.8611 | Speed (samples/sec) 29409.7264 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 7.2021
+******************************93 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00093 | Step 00000 | Loss 0.5243 | Train Acc 0.8618 | Speed (samples/sec) 29399.4758 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 7.2432
+******************************94 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00094 | Step 00000 | Loss 0.5258 | Train Acc 0.8610 | Speed (samples/sec) 29421.9478 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.5596
+******************************95 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00095 | Step 00000 | Loss 0.5219 | Train Acc 0.8625 | Speed (samples/sec) 29429.3384 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.8328
+******************************96 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00096 | Step 00000 | Loss 0.5230 | Train Acc 0.8620 | Speed (samples/sec) 29443.1034 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.7470
+******************************97 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00097 | Step 00000 | Loss 0.5208 | Train Acc 0.8625 | Speed (samples/sec) 29458.5795 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.7221
+******************************98 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00098 | Step 00000 | Loss 0.5199 | Train Acc 0.8628 | Speed (samples/sec) 29466.1171 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.8157
+******************************99 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00099 | Step 00000 | Loss 0.5191 | Train Acc 0.8633 | Speed (samples/sec) 29484.2130 | GPU 3263.7 MB
+[2021-06-10 21:09:15,770] [INFO] [logging.py:60:log_dist] [Rank 0] step=100, skipped=0, lr=[0.03], mom=[[0.8, 0.999]]
+[2021-06-10 21:09:15,770] [INFO] [timer.py:160:stop] 0/100, SamplesPerSec=3916.9391690805273
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 6.6512
+******************************100 epoch 
+ the length of training loader ------------------------------------------------------------
+1
+1
+12
+
+   ***************************     step   0   *************************************
+-----------------------------------------step start------------------------
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------before blocks to device
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after blocks to device
+ Nvidia-smi: 8.21142578125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch train
+ Nvidia-smi: 8.34619140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss
+ Nvidia-smi: 7.93994140625GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+-----------------------------------------after batch loss backward
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch 00100 | Step 00000 | Loss 0.5227 | Train Acc 0.8627 | Speed (samples/sec) 29477.0541 | GPU 3263.7 MB
+-----------------------------------------after batch engine step
+ Nvidia-smi: 8.08251953125GB
+
+Max Memory Allocated 3.187253475189209  GigaBytes
+
+Epoch Time(s): 7.1466
+Eval Acc 0.8706
+Test Acc: 0.6943
+Avg epoch time(time.time()): 7006.113350391388 ms
